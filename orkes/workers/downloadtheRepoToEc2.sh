@@ -10,6 +10,6 @@ sudo docker run -d -p 80:80 simple-docker-image
 EOF
 )
 
-ssh -vi privatekey.pem ubuntu@ec2-13-233-142-101.ap-south-1.compute.amazonaws.com  "$COMMANDS"
+ssh -vi "C:\Users\rocin\github\inf\infinity-node\orkes\workers\privatekey.pem" ubuntu@ec2-13-233-142-101.ap-south-1.compute.amazonaws.com  "$COMMANDS"
 
 echo "Connection ended"
