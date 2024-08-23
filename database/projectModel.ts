@@ -8,6 +8,12 @@ interface Project {
     githubLink: string;
     patAttached: string;
     vmAttached: string;
+    previousDeployments?: {
+        deploymentId: string;
+        deploymentType: "Source" | "Build" | "Test" | "Deploy";
+        deploymentStatus: 'Success' | 'Failed' | 'In Progress';
+        deploymentLogs: string;
+    }[];
 }
 
 const projectSchema = new mongoose.Schema<Project>({
@@ -17,6 +23,18 @@ const projectSchema = new mongoose.Schema<Project>({
     githubLink: { type: String, required: false },
     patAttached: { type: String, required: false },
     vmAttached: { type: String, required: false },
+    previousDeployments: {
+        type: [
+            {
+                deploymentId: String,
+                deploymentName: String,
+                deploymentType: String,
+                deploymentStatus: String,
+                deploymentLogs: String,
+            },
+        ],
+        required: false,
+    },
 });
 
 const ProjectModel = mongoose.model<Project>("Project", projectSchema);
@@ -75,3 +93,21 @@ export const deleteProject = async (projectId: string, ownerId: string) => {
     );
 };
 
+// add deployment
+export const addDeployment = async (projectId: string, deployment: {
+    deploymentId: string;
+    deploymentType: "Source" | "Build" | "Test" | "Deploy";
+    deploymentStatus: 'Success' | 'Failed' | 'In Progress';
+    deploymentLogs: string;
+}) => {
+    const project = await ProjectModel.findById(projectId);
+    if (!project) {
+        throw new Error("Project not found");
+    }
+    if (!project.previousDeployments) {
+        project.previousDeployments = [];
+    }
+    project.previousDeployments.push(deployment);
+    await project.save();
+    return project;
+};

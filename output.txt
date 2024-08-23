@@ -1,73 +1,12 @@
 Starting connection script
+Starting connection script
 Starting remote commands...
-834c70521cec42b9502d0c9efd41794e45741bfac9bea8d116d998210a70f9f3
+Directory simple-docker-image already exists. Pulling latest changes...
+Already up to date.
+Error: Directory simple-docker-image does not exist or Already exists
+3651304a9f3f519d67a6944fd4eb17af32efa0c78bd8ad6407bfa6519a23500a
 Connection ended
 
-OpenSSH_9.4p1, OpenSSL 3.1.2 1 Aug 2023
-debug1: Reading configuration data /c/Users/rocin/.ssh/config
-debug1: Reading configuration data /c/Users/rocin/.ssh/gitpod/config
-debug1: /c/Users/rocin/.ssh/config line 6: Applying options for ec2-13-233-142-101.ap-south-1.compute.amazonaws.com
-debug1: Reading configuration data /etc/ssh/ssh_config
-debug1: Connecting to ec2-13-233-142-101.ap-south-1.compute.amazonaws.com [13.233.142.101] port 22.
-debug1: Connection established.
-debug1: identity file C:\\Users\\rocin\\github\\inf\\infinity-node\\orkes\\workers\\privatekey.pem type -1
-debug1: identity file C:\\Users\\rocin\\github\\inf\\infinity-node\\orkes\\workers\\privatekey.pem-cert type -1
-debug1: identity file C:\\Users\\rocin\\github\\node\\privatekey.pem type -1
-debug1: identity file C:\\Users\\rocin\\github\\node\\privatekey.pem-cert type -1
-debug1: Local version string SSH-2.0-OpenSSH_9.4
-debug1: Remote protocol version 2.0, remote software version OpenSSH_9.6p1 Ubuntu-3ubuntu13.4
-debug1: compat_banner: match: OpenSSH_9.6p1 Ubuntu-3ubuntu13.4 pat OpenSSH* compat 0x04000000
-debug1: Authenticating to ec2-13-233-142-101.ap-south-1.compute.amazonaws.com:22 as 'ubuntu'
-debug1: load_hostkeys: fopen /c/Users/rocin/.ssh/known_hosts2: No such file or directory
-debug1: load_hostkeys: fopen /etc/ssh/ssh_known_hosts: No such file or directory
-debug1: load_hostkeys: fopen /etc/ssh/ssh_known_hosts2: No such file or directory
-debug1: SSH2_MSG_KEXINIT sent
-debug1: SSH2_MSG_KEXINIT received
-debug1: kex: algorithm: sntrup761x25519-sha512@openssh.com
-debug1: kex: host key algorithm: ssh-ed25519
-debug1: kex: server->client cipher: chacha20-poly1305@openssh.com MAC: <implicit> compression: none
-debug1: kex: client->server cipher: chacha20-poly1305@openssh.com MAC: <implicit> compression: none
-debug1: expecting SSH2_MSG_KEX_ECDH_REPLY
-debug1: SSH2_MSG_KEX_ECDH_REPLY received
-debug1: Server host key: ssh-ed25519 SHA256:twGvs6a9WBpymkDd9TElhv3SK7sqXja1OrAndVD4fZ0
-debug1: load_hostkeys: fopen /c/Users/rocin/.ssh/known_hosts2: No such file or directory
-debug1: load_hostkeys: fopen /etc/ssh/ssh_known_hosts: No such file or directory
-debug1: load_hostkeys: fopen /etc/ssh/ssh_known_hosts2: No such file or directory
-debug1: Host 'ec2-13-233-142-101.ap-south-1.compute.amazonaws.com' is known and matches the ED25519 host key.
-debug1: Found key in /c/Users/rocin/.ssh/known_hosts:3
-debug1: rekey out after 134217728 blocks
-debug1: SSH2_MSG_NEWKEYS sent
-debug1: expecting SSH2_MSG_NEWKEYS
-debug1: SSH2_MSG_NEWKEYS received
-debug1: rekey in after 134217728 blocks
-debug1: Will attempt key: C:\\Users\\rocin\\github\\inf\\infinity-node\\orkes\\workers\\privatekey.pem  explicit
-debug1: Will attempt key: C:\\Users\\rocin\\github\\node\\privatekey.pem  explicit
-debug1: SSH2_MSG_EXT_INFO received
-debug1: kex_input_ext_info: server-sig-algs=<ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256>
-debug1: kex_input_ext_info: publickey-hostbound@openssh.com=<0>
-debug1: kex_input_ext_info: ping@openssh.com (unrecognised)
-debug1: SSH2_MSG_SERVICE_ACCEPT received
-debug1: Authentications that can continue: publickey
-debug1: Next authentication method: publickey
-debug1: Trying private key: C:\\Users\\rocin\\github\\inf\\infinity-node\\orkes\\workers\\privatekey.pem
-Authenticated to ec2-13-233-142-101.ap-south-1.compute.amazonaws.com ([13.233.142.101]:22) using "publickey".
-debug1: channel 0: new session [client-session] (inactive timeout: 0)
-debug1: Requesting no-more-sessions@openssh.com
-debug1: Entering interactive session.
-debug1: pledge: filesystem
-debug1: client_input_global_request: rtype hostkeys-00@openssh.com want_reply 0
-debug1: client_input_hostkeys: searching /c/Users/rocin/.ssh/known_hosts for ec2-13-233-142-101.ap-south-1.compute.amazonaws.com / (none)
-debug1: client_input_hostkeys: searching /c/Users/rocin/.ssh/known_hosts2 for ec2-13-233-142-101.ap-south-1.compute.amazonaws.com / (none)
-debug1: client_input_hostkeys: hostkeys file /c/Users/rocin/.ssh/known_hosts2 does not exist
-debug1: client_input_hostkeys: no new or deprecated keys from server
-debug1: Remote: /home/ubuntu/.ssh/authorized_keys:1: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding
-debug1: Sending command: echo "Starting remote commands..."
-git clone https://github.com/shekeriev/simple-docker-image.git
-cd simple-docker-image
-sudo docker build -t simple-docker-image .
-sudo docker run -d -p 80:80 simple-docker-image
-debug1: pledge: fork
-fatal: destination path 'simple-docker-image' already exists and is not an empty directory.
 #0 building with "default" instance using docker driver
 
 #1 [internal] load build definition from Dockerfile
@@ -75,7 +14,7 @@ fatal: destination path 'simple-docker-image' already exists and is not an empty
 #1 DONE 0.0s
 
 #2 [internal] load metadata for docker.io/library/nginx:latest
-#2 DONE 0.3s
+#2 DONE 1.4s
 
 #3 [internal] load .dockerignore
 #3 transferring context: 77B done
@@ -86,7 +25,7 @@ fatal: destination path 'simple-docker-image' already exists and is not an empty
 
 #5 [internal] load build context
 #5 transferring context: 143B done
-#5 DONE 0.1s
+#5 DONE 0.0s
 
 #6 [2/2] COPY html/* /usr/share/nginx/html/
 #6 CACHED
@@ -96,10 +35,4 @@ fatal: destination path 'simple-docker-image' already exists and is not an empty
 #7 writing image sha256:c95761999fe2a9f57756b4ef29219b3517432ce64a02502edd3f9cb9d43b8589 done
 #7 naming to docker.io/library/simple-docker-image done
 #7 DONE 0.0s
-debug1: client_input_channel_req: channel 0 rtype exit-status reply 0
-debug1: client_input_channel_req: channel 0 rtype eow@openssh.com reply 0
-docker: Error response from daemon: driver failed programming external connectivity on endpoint interesting_merkle (5d8e16cea073032928887d6f1cc5bf6ddef125fae07923f9dc86bc56ade7928d): Bind for 0.0.0.0:80 failed: port is already allocated.
-debug1: channel 0: free: client-session, nchannels 1
-Transferred: sent 3912, received 5056 bytes, in 1.3 seconds
-Bytes per second: sent 2969.3, received 3837.6
-debug1: Exit status 125
+docker: Error response from daemon: driver failed programming external connectivity on endpoint dreamy_euler (1971280e7081258fd8349ca76b94ead72713f6f77040fc1de5374ed078861998): Bind for 0.0.0.0:80 failed: port is already allocated.

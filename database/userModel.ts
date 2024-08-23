@@ -31,6 +31,13 @@ export const createUser = async (username: string, password: string) => {
     return newUser.save();
 };
 
+export const getUser = async (_id: string) => {
+    return UserModel.findById
+        (
+            _id
+        );
+}
+
 // login
 export const login = async (username: string, password: string) => {
     return UserModel.findOne({

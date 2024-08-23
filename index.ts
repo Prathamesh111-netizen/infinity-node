@@ -7,12 +7,16 @@ import userRouter from "./api/user";
 import projectRouter from "./api/project";
 import patRouter from "./api/pat";
 import MainWorkflow from "./orkes/main";
+import { Database } from "./database/db";
+import { authMiddleware } from "./auth";
+import cors from "cors";
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
@@ -21,16 +25,17 @@ app.get("/", async (req: Request, res: Response) => {
   return res.send("Hello World");
 });
 
-app.use("/api/user", userRouter);
-app.use("/api/project", projectRouter);
-app.use("/api/pat", patRouter);
-
-app.use("/api/github", GithubActionsRouter);
- 
-app.use("/api/orkes", async (req: Request, res: Response) => {
-  await MainWorkflow();
+app.post("/api/orkes/:projectId", async (req: Request, res: Response) => {
+  const projectId = req.params.projectId;
+  console.log("Project ID: ", projectId);
+  await MainWorkflow(projectId);
   return res.send("Orkes workflow started");
 });
+
+app.use("/api/user", userRouter);
+app.use("/api/project", authMiddleware, projectRouter);
+app.use("/api/pat", authMiddleware, patRouter);
+app.use("/api/github", GithubActionsRouter);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({
@@ -41,5 +46,6 @@ app.use((req: Request, res: Response) => {
 });
 
 app.listen(port, () => {
+  Database.getInstance();
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });

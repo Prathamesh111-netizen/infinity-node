@@ -17,7 +17,7 @@ router.get("/check-if-yml-exists", async (req, res) => {
     const branch = req.body.branch as string;
     if (!githubRepo || !branch) {
         const failedResponse: WebResponse = {
-            status: 400,
+            status: false,
             message: "Invalid request",
             data: null,
         };
@@ -32,14 +32,14 @@ router.get("/check-if-yml-exists", async (req, res) => {
 
     if (exists) {
         const successResponse: WebResponse = {
-            status: 200,
+            status: true,
             message: "YML file exists",
             data: null,
         };
         return res.status(200).json(successResponse);
     } else {
         const failedResponse: WebResponse = {
-            status: 404,
+            status: false,
             message: "YML file does not exist",
             data: null,
         };

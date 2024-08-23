@@ -2,24 +2,35 @@ import { ConductorWorker, Task } from "@io-orkes/conductor-javascript";
 import { promisify } from 'util';
 import { exec } from 'child_process';
 import fs from 'fs';
+import { addDeployment, getProjectById } from "../../database/projectModel";
 
 export const downloadtheRepoToEc2: ConductorWorker = {
   taskDefName: "task-downloadtheRepoToEc2",
-  execute: async (task: Task) => {
-    // Sample output
-    const inputData = task.inputData;
-    console.log("Input data: ", inputData);
+  execute: async ({ inputData }) => {
+    if (!inputData)
+      throw new Error("Input data is required");
+    const { projectId, deploymentId } = inputData;
+
+    const project = await getProjectById(projectId);
+    if (!project)
+      throw new Error("Project not found");
+
+    console.log("Project: ", project);
 
     // Do your work here
-    const downloadtheRepoToEc2BashScriptPath = "./downloadtheRepoToEc2.sh";
     const commander = promisify(exec);
-    const { stdout, stderr } = await commander(
-      `cd C:\\Users\\rocin\\github\\inf\\infinity-node\\orkes\\workers && bash downloadtheRepoToEc2.sh`);
+    const { stdout, stderr } = await commander(`bash downloadtheRepoToEc2.sh ${project.githubLink}`);
 
     // write the stdout and stderr to the file
     fs.writeFileSync('output.txt', stdout + '\n' + stderr);
 
-    console.log("Output: ", stdout, stderr);
+    // console.log("Output: ", stdout, stderr);
+    await addDeployment(projectId, {
+      deploymentId: "2",
+      deploymentType: "Build",
+      deploymentStatus: 'Success',
+      deploymentLogs: stdout + '\n' + stderr
+    });
 
     return {
       outputData: {

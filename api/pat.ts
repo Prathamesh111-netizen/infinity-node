@@ -6,7 +6,9 @@ const router = Router();
 
 router.post("/", async (req, res) => {
     try {
-        const { token, desc, userId } = req.body;
+        const { token, desc } = req.body;
+        const userId = req.body.userId;
+        console.log({ token, desc, userId });
         if (!token || !desc) {
             return res.status(400).json({
                 message: "Invalid request",
@@ -24,14 +26,14 @@ router.post("/", async (req, res) => {
         };
         const response = await addPAT(userId, newPat);
         if (!response) {
-            return res.status(500).json({
+            return res.json({
                 message: "Internal server error",
                 status: false,
                 data: null
             });
         }
 
-        return res.status(201).json({
+        return res.json({
             message: "PAT created",
             status: true,
             data: newPat
@@ -39,7 +41,7 @@ router.post("/", async (req, res) => {
 
 
     } catch (e) {
-        return res.status(500).json({
+        return res.json({
             message: "Internal server error",
             status: false,
             data: null

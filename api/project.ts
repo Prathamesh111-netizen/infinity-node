@@ -1,12 +1,13 @@
 import { Router } from "express";
-import { createProject, getProjectById } from "../database/projectModel";
+import { addDeployment, createProject, getProjectById } from "../database/projectModel";
 
 const router = Router();
 
 router.post("/", async (req, res) => {
+    7
     try {
-        const { projectName, projectDescription, ownerId } = req.body;
-        if (!projectName || !projectDescription || !ownerId) {
+        const { projectName, projectDescription, githubLink, ownerId } = req.body;
+        if (!projectName || !projectDescription || !ownerId || !githubLink) {
             return res.status(400).json({
                 message: "Invalid request",
                 status: false,
@@ -19,7 +20,7 @@ router.post("/", async (req, res) => {
             projectName,
             projectDescription,
             ownerId,
-            githubLink: "",
+            githubLink,
             patAttached: "",
             vmAttached: ""
         });
@@ -77,7 +78,22 @@ router.delete("/:projectId", (req, res) => {
     res.send("Delete project");
 });
 
-router.put("/:projectId", (req, res) => {
+router.put("/:projectId", async (req, res) => {
+    const projectId = req.params.projectId;
+    const {
+        deploymentId,
+        deploymentType,
+        deploymentStatus,
+        deploymentLogs
+    } = req.body;
+    console.log(projectId, deploymentId, deploymentType, deploymentStatus, deploymentLogs);
+    await addDeployment(projectId, {
+        deploymentId,
+        deploymentType,
+        deploymentStatus,
+        deploymentLogs
+    });
+
     res.send("Update project");
 });
 

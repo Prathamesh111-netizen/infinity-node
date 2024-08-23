@@ -1,6 +1,7 @@
 import { ConductorClient, orkesConductorClient, WorkflowExecutor } from "@io-orkes/conductor-javascript";
 import { createTaskRunner } from "./workers/workerUtil";
 import dotenv from "dotenv";
+import { nanoid } from "nanoid";
 dotenv.config();
 
 const CICD_WORKFLOW_NAME = "infinity-cicd";
@@ -12,10 +13,11 @@ const config = {
   serverUrl: process.env.CONDUCTOR_SERVER_URL,
 };
 
-async function runWorkflow({ client, workflowName, workflowVersion }: {
+async function runWorkflow({ client, workflowName, workflowVersion, projectId }: {
   client: ConductorClient,
   workflowName: string,
-  workflowVersion: number
+  workflowVersion: number,
+  projectId: string
 }) {
   const workflowExecutor = new WorkflowExecutor(client);
   return workflowExecutor.executeWorkflow(
@@ -23,8 +25,8 @@ async function runWorkflow({ client, workflowName, workflowVersion }: {
       name: workflowName,
       version: workflowVersion,
       input: {
-        accountId: "1234",
-        amount: 1000,
+        projectId,
+        deploymentId: nanoid(),
       },
     },
     workflowName,
@@ -33,16 +35,16 @@ async function runWorkflow({ client, workflowName, workflowVersion }: {
   );
 }
 
-async function main() {
+async function main(projectId: string) {
   const name = CICD_WORKFLOW_NAME;
-  const version =  CICD_WORKFLOW_VERSION;
+  const version = CICD_WORKFLOW_VERSION;
   if (!name || !version) {
     throw new Error("Workflow name or version not provided");
   }
   const client = await orkesConductorClient(config);
   const taskRunner = createTaskRunner(client);
   taskRunner.startPolling();
-  await runWorkflow({ client: client, workflowName: name, workflowVersion: Number(version) });
+  await runWorkflow({ client: client, workflowName: name, workflowVersion: Number(version), projectId });
   taskRunner.stopPolling();
 }
 
