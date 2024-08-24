@@ -13,7 +13,9 @@ interface Project {
         deploymentType: "Source" | "TYPECHECK" | "Deploy";
         deploymentStatus: 'Success' | 'Failed';
         deploymentLogs: string;
+        updatedAt: Date;
     }[];
+    externalPorts?: string[];
 }
 
 const projectSchema = new mongoose.Schema<Project>({
@@ -27,12 +29,16 @@ const projectSchema = new mongoose.Schema<Project>({
         type: [
             {
                 deploymentId: String,
-                deploymentName: String,
                 deploymentType: String,
                 deploymentStatus: String,
                 deploymentLogs: String,
+                updatedAt: Date,
             },
         ],
+        required: false,
+    },
+    externalPorts: {
+        type: [String],
         required: false,
     },
 });
@@ -107,7 +113,10 @@ export const addDeployment = async (projectId: string, deployment: {
     if (!project.previousDeployments) {
         project.previousDeployments = [];
     }
-    project.previousDeployments.push(deployment);
+    project.previousDeployments.push({
+        ...deployment,
+        updatedAt: new Date(),
+    });
     await project.save();
     return project;
 };
@@ -117,6 +126,16 @@ export const attachAccessToken = async (projectId: string, pat: string) => {
         ({ _id: projectId },
             {
                 patAttached: pat,
+            },
+            { new: true }
+        );
+}
+
+export const updateExternalPorts = async (projectId: string, externalPorts: string[]) => {
+    await ProjectModel.findOneAndUpdate
+        ({ _id: projectId },
+            {
+                externalPorts,
             },
             { new: true }
         );

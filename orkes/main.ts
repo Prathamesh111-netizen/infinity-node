@@ -45,10 +45,12 @@ async function startCICDWorkflow(projectId: string) {
         },
         decisionCases: {
           "Dockerfile": [simpleTask(`${CICD_WRKF_DOCKERFILE_TASK}_ref`, CICD_WRKF_DOCKERFILE_TASK, {
-            ...inputParameters
+            ...inputParameters,
+            githubLink: "${task-downloadtheRepoToEc2_ref.output.githubLink}",
           })],
           "DockerCompose": [simpleTask(`${CICD_WRKF_DOCKERCOMPOSE_TASK}_ref`, CICD_WRKF_DOCKERCOMPOSE_TASK, {
-            ...inputParameters
+            ...inputParameters,
+            githubLink: "${task-downloadtheRepoToEc2_ref.output.githubLink}",
           })],
         },
         defaultCase: [
