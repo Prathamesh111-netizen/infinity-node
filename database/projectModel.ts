@@ -10,8 +10,8 @@ interface Project {
     vmAttached: string;
     previousDeployments?: {
         deploymentId: string;
-        deploymentType: "Source" | "Build" | "Test" | "Deploy";
-        deploymentStatus: 'Success' | 'Failed' | 'In Progress';
+        deploymentType: "Source" | "TYPECHECK" | "Deploy";
+        deploymentStatus: 'Success' | 'Failed';
         deploymentLogs: string;
     }[];
 }
@@ -96,8 +96,8 @@ export const deleteProject = async (projectId: string, ownerId: string) => {
 // add deployment
 export const addDeployment = async (projectId: string, deployment: {
     deploymentId: string;
-    deploymentType: "Source" | "Build" | "Test" | "Deploy";
-    deploymentStatus: 'Success' | 'Failed' | 'In Progress';
+    deploymentType: "Source" | "TYPECHECK" | "Deploy";
+    deploymentStatus: 'Success' | 'Failed';
     deploymentLogs: string;
 }) => {
     const project = await ProjectModel.findById(projectId);
@@ -111,3 +111,13 @@ export const addDeployment = async (projectId: string, deployment: {
     await project.save();
     return project;
 };
+
+export const attachAccessToken = async (projectId: string, pat: string) => {
+    await ProjectModel.findOneAndUpdate
+        ({ _id: projectId },
+            {
+                patAttached: pat,
+            },
+            { new: true }
+        );
+}

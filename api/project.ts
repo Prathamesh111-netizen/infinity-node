@@ -1,10 +1,9 @@
 import { Router } from "express";
-import { addDeployment, createProject, getProjectById } from "../database/projectModel";
+import { addDeployment, attachAccessToken, createProject, getProjectById } from "../database/projectModel";
 
 const router = Router();
 
 router.post("/", async (req, res) => {
-    7
     try {
         const { projectName, projectDescription, githubLink, ownerId } = req.body;
         if (!projectName || !projectDescription || !ownerId || !githubLink) {
@@ -76,6 +75,15 @@ router.get("/:projectId", async (req, res) => {
 
 router.delete("/:projectId", (req, res) => {
     res.send("Delete project");
+});
+
+router.put("/pat/:projectId", async (req, res) => {
+    const projectId = req.params.projectId;
+    const { pat } = req.body;
+
+    await attachAccessToken(projectId, pat);
+
+    res.send("Update project");
 });
 
 router.put("/:projectId", async (req, res) => {
