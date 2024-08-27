@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addDeployment, attachAccessToken, createProject, getProjectById } from "../database/projectModel";
+import { addDeployment, attachAccessToken, createProject, getProjectById, ProjectModel } from "../database/projectModel";
 
 const router = Router();
 
@@ -86,6 +86,28 @@ router.put("/pat/:projectId", async (req, res) => {
     res.send("Update project");
 });
 
+router.put("/edit/:projectId", async (req, res) => {
+    const projectId = req.params.projectId;
+    const {
+        newProjectName,
+        newProjectDescription,
+        newGithubLink,
+        newPersonalAccessToken,
+    } = req.body;
+
+    await ProjectModel.updateOne
+        (
+            { _id: projectId },
+            {
+                projectName: newProjectName,
+                projectDescription: newProjectDescription,
+                githubLink: newGithubLink,
+                patAttached: newPersonalAccessToken
+            }
+        );
+    res.send("added deployment to project");
+});
+
 router.put("/:projectId", async (req, res) => {
     const projectId = req.params.projectId;
     const {
@@ -102,7 +124,7 @@ router.put("/:projectId", async (req, res) => {
         deploymentLogs
     });
 
-    res.send("Update project");
+    res.send("added deployment to project");
 });
 
 export default router;

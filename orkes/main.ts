@@ -1,4 +1,4 @@
-import { orkesConductorClient, simpleTask, TaskType, WorkflowDef, WorkflowExecutor } from "@io-orkes/conductor-javascript";
+import { orkesConductorClient, SchedulerClient, simpleTask, TaskType, WorkflowDef, WorkflowExecutor } from "@io-orkes/conductor-javascript";
 import dotenv from "dotenv";
 import { nanoid } from "nanoid";
 import { CICD_WORKFLOW_NAME, CICD_WORKFLOW_VERSION, CICD_WRKF_DEFAULT_DEPLOY_TASK, CICD_WRKF_DOCKERCOMPOSE_TASK, CICD_WRKF_DOCKERFILE_TASK, CICD_WRKF_DOWNLOAD_TASK, CICD_WRKF_TYPEBASED_DEPLOY_TASK, CICD_WRKF_TYPEBASED_DEPLOY_TASK_SWITCH_VALUE, CICD_WRKF_TYPECHECK_TASK, OWNER_EMAIL } from "./constants";
@@ -153,8 +153,28 @@ async function startTestWorkflow() {
 async function startManager() {
   const client = await orkesConductorClient(config);
   const manager = createTaskRunner(client);
+  // createSchedule();
   manager.startPolling();
 }
+
+// async function createSchedule() {
+//   const client = await orkesConductorClient(config);
+
+//   const sc = new SchedulerClient(client);
+
+//   sc.saveSchedule({
+//     name: " test-schedule",
+//     cronExpression: "0 0 0 * * ?",
+//     // startWorkflowRequest: {
+//     //   name: "test-workflow",
+//     //   version: 1,
+//     //   input: {
+//     //     projectId: "test-project",
+//     //     deploymentId: "test-deployment",
+//     //   },
+//     // },
+//   });
+// }
 
 export {
   startCICDWorkflow,
